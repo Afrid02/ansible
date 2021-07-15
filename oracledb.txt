@@ -1,0 +1,22 @@
+- name: Host configuration
+hosts: "{{ hostgroup }}"
+become: yes
+roles:
+- common
+- orahost
+- cxoracle
+
+- name: Database Server Installation & Database Creation
+hosts: "{{ hostgroup }}"
+become: yes
+roles:
+- oraswdb-install
+- oradb-manage-db
+
+- name: Database Server Installation & Database Creation
+hosts: database-servers
+user: oracle 
+sudo: yes
+roles:
+- oraswdb-install
+- oradb-create
