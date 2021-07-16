@@ -1,0 +1,54 @@
+###############################################
+# tree roles/resolv.conf
+roles/resolv.conf/
+├── handlers
+│   └── main.yml
+├── tasks
+│   └── main.yml
+└── templates
+    └── resolv.conf.j2
+
+############################################
+#tasks/main.yml
+#############################################
+
+---
+- name: make sure line 'dns=none' is set in /etc/NetworkManager/NetworkManager.conf
+  ini_file:
+    path: /etc/NetworkManager/NetworkManager.conf
+    state: present
+    no_extra_spaces: yes
+    section: main
+    option: dns
+    value: none
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify:
+    - reload NetworkManager
+
+############################################
+
+---
+- name: deploy resolv.conf template
+  template:
+    src: roles/resolv.conf/templates/resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify:
+    - reload NetworkManager
+
+############################################
+#handlers/main.yml
+#############################################
+
+# cat resolv.conf/handlers/main.yml
+---
+- name: reload NetworkManager
+  service:
+    name: NetworkManager
+    state: reloaded
