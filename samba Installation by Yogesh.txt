@@ -1,0 +1,27 @@
+---
+ - name : Installing samba
+   hosts: all
+   gather_facts: no
+   vars: 
+    - pkgs: samba*
+   tasks: 
+   - name: Installing using Yum Module
+     yum:
+       name: "{{ pkgs }}"
+    - notify : enable_service
+
+
+   handlers:
+    - name: disable selinux 
+      shell:
+        cmd: setenforce 0
+        register: result
+     
+    - name: enable_service
+      service:
+           name: "{{ item }}"
+           state: start
+       loop:
+         - smb
+         - nmb
+       when: result is changed
