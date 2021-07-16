@@ -1,0 +1,16 @@
+﻿---
+ - name : Installing sendmail
+   hosts: all
+   gather_facts: no
+   vars: 
+    - pkgs: sendmail-*
+   tasks: 
+   - name: Installing using Yum Module
+     yum:
+       name: "{{ pkgs }}"
+    - notify : enable_service
+   handlers:
+    - name: enable_service
+      service:
+           name: sendmail
+           state: start
