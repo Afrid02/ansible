@@ -1,0 +1,57 @@
+#NFS server side config
+###############################################
+
+---
+- hosts: nfs-server
+  become: yes
+  tasks:
+    - name: install nfs-utils
+      yum: name=nfs-utils state=latest
+
+    - name: Create a mountable directory if it does not exist
+      file:
+        path: /home/vagrant/nfs_test
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: '0775'
+    - name: enable rpcbind nfslock nfs
+      service:
+        name: "{{ item }}"
+        enabled: yes
+      with_items:
+        - rpcbind
+        - nfslock
+        - nfs
+    - name: Copy exports file.
+      template:
+        src: ./ansible/exports.j2
+        dest: /etc/exports
+        owner: root
+        group: root
+        mode: 0644
+    - name: NFS apply change configrue
+      shell: systemctl reload nfs;exportfs -a
+
+#####################################################################
+
+#NFS Client side config
+
+#######################################################################
+
+---
+- hosts: nfs-clients
+  become: yes
+  tasks:
+    - name: install nfs-utils
+      yum: name=nfs-utils state=latest
+
+    - name: Create a mountable directory if it does not exist
+      file:
+        path: /mnt/web_storage
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: '0775'
+    - name: Mount volumn
+      shell: sudo mount 192.168.3.9:/home/vagrant/nfs_test /mnt/web_storage
