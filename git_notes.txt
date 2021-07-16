@@ -1,0 +1,58 @@
+git 
+
+yum install git
+-----------------------------------------
+create user and email to git
+-----------------------------------------
+>git config --global user.name "afrid"
+>git config --global user.mail  "afrid78611@gmail.com"
+>git config --global user.name(show user name)
+>git config --global user.mail(show user email)
+>git config --list (user info)
+
+-------------------------------------------
+all  git command start with git
+u should introduce urself to git
+git work with repostories
+most of git command should run inside git repostry few may work without repo
+
+create new git repo
+
+>>git init . in local where u need to create git repo
+
+u can see./git file in that location after running above cmd
+---------------------------------------------------------------
+GIT STAGES
+----------------------------------------------------------------
+1.working directory
+(repo we created)
+to add file from working dir to staging area
+>>git add file1
+>>git add . or >>git add --all (to add all file in dir)
+>>git status (file status on which dir or stage)
+untraced means working dir (file in working dir are shown in red)
+
+2.staging area()
+traced or "changed to commit" means stated area (file in staging areaare shown in green)
+>>git commit -m  <comments> (-m is commet id) (file from staging area to repository)
+>>git commit -m "this my first file"
+3.repository
+>>git log (show file in repo)
+
+>>git diff [used to compare change done in working dir and staging]
+>>git diff --staged or git diff --staged HEAD[compare file changes in staging area and repo]
+>>git diff --HEAD[compare file changes in working dir and repo]
+--------------------------------------------------------------
+GIT HUB
+---------------------------------------------------------
+create repo in github
+clone that repo : to get git hub repo to local repo we need to clone repo and take that to our own machine repo
+how to clone repo:
+code > code > copy link (http or ssh available)
+>git clone paste link
+to push back changes to github
+>>git push origin master  
+here origin is github repo
+master is branch on repo
+>>git pull(once u done clone and push second tym u have to pull it will update same repo file in mac.
+
